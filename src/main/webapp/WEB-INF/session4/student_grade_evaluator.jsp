@@ -10,11 +10,11 @@
     <table border="1">
         <tr>
             <td>Name:</td>
-            <td><input type="text" name="name" value="${name}"></td>
+            <td><input type="text" name="name" value="${requestScope.name}"></td>
         </tr>
         <tr>
             <td>Score:</td>
-            <td><input type="number" min="0" name="score" value="${score}"></td>
+            <td><input type="number" min="0" name="score" value="${requestScope.score}"></td>
         </tr>
         <tr>
             <td><input type="submit" value="Grade"></td>
@@ -25,13 +25,13 @@
 
 <h1>Result:</h1>
 <c:choose>
-    <c:when test="${score >= 90 && score <=100}">
+    <c:when test="${requestScope.score >= 90 && requestScope.score <=100}">
         <span>Excellent</span>
     </c:when>
-    <c:when test="${score >= 70 && score <=89}">
+    <c:when test="${requestScope.score >= 70 && requestScope.score <=89}">
         <span>Good</span>
     </c:when>
-    <c:when test="${score >= 50 && score <=69}">
+    <c:when test="${requestScope.score >= 50 && requestScope.score <=69}">
         <span>Average</span>
     </c:when>
     <c:otherwise>
