@@ -11,7 +11,7 @@
     <div class="row justify-content-center align-content-center m-0">
         <c:url var="LoginURL" value="/login"/>
         <c:url var="LoginCookieURL" value="/login-cookie"/>
-        <form action="${LoginCookieURL}" method="post">
+        <form action="${LoginURL}" method="post">
             <div class="col-md-12 ">
                 <div class="mb-3">
                     <h1>Login</h1>
