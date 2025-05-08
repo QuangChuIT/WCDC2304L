@@ -26,10 +26,10 @@ public class LoginServletCookie extends HttpServlet {
         if (username.equals("admin") && password.equals("123")) {
             Cookie cookie = new Cookie("username", username);
             cookie.setPath("/");
-            cookie.setMaxAge(180);
+            cookie.setMaxAge(60);
             cookie.setHttpOnly(true);
             resp.addCookie(cookie);
-            resp.sendRedirect("/home");
+            resp.sendRedirect("/product-servlet");
         } else {
             req.setAttribute("error", "Invalid username or password");
             req.getRequestDispatcher("/WEB-INF/session5/login.jsp").forward(req, resp);
