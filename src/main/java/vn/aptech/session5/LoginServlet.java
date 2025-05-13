@@ -30,7 +30,7 @@ public class LoginServlet extends HttpServlet {
         if (username.equals("admin") && password.equals("123")) {
             HttpSession session = req.getSession(true);
             session.setAttribute("username", username);
-            resp.sendRedirect("/home");
+            resp.sendRedirect("/student-servlet-jpa");
         } else {
             req.setAttribute("error", "Invalid username or password");
             req.getRequestDispatcher("/WEB-INF/session5/login.jsp").forward(req, resp);

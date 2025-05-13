@@ -16,6 +16,7 @@
                 <th>BirthDay</th>
                 <th>Email</th>
                 <th>Phone</th>
+                <th>Actions</th>
             </tr>
             <c:forEach var="s" items="${requestScope.students}">
                 <tr>
@@ -24,6 +25,19 @@
                     <td>${s.birthDay}</td>
                     <td>${s.email}</td>
                     <td>${s.phone}</td>
+                    <td>
+                        <c:url var="DeleteStudentURL" value="/student-servlet-jpa">
+                            <c:param name="studentId" value="${s.id}"/>
+                            <c:param name="action" value="delete"/>
+                        </c:url>
+                        <a href="${DeleteStudentURL}" onclick="return confirm('Are you sure to delete this student')" class="btn btn-sm btn-danger">Delete</a>
+
+                        <c:url var="PreUpdateStudentURL" value="/student-servlet-jpa">
+                            <c:param name="studentId" value="${s.id}"/>
+                            <c:param name="action" value="preUpdate"/>
+                        </c:url>
+                        <a href="${PreUpdateStudentURL}" class="btn btn-sm btn-info">Edit</a>
+                    </td>
                 </tr>
             </c:forEach>
         </table>
