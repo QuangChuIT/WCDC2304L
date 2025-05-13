@@ -2,6 +2,8 @@
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
     <persistence-unit name="Session7PU">
         <class>vn.aptech.session7.Student</class>
+        <class>vn.aptech.session8.Category</class>
+        <class>vn.aptech.session8.Product</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3307/wcdsession7?useSSL=false"/>
