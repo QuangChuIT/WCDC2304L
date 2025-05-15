@@ -1,11 +1,10 @@
 package vn.aptech.session7;
 
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
-
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 @WebListener
 public class ApplicationContextListener implements ServletContextListener {

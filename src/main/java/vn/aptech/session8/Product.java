@@ -1,6 +1,7 @@
 package vn.aptech.session8;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 
 @Entity

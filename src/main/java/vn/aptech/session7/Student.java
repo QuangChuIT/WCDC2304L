@@ -1,6 +1,7 @@
 package vn.aptech.session7;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
 @Entity
