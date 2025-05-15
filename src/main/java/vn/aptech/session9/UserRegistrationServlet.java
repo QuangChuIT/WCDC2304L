@@ -15,18 +15,18 @@ import jakarta.validation.ValidatorFactory;
 import java.io.IOException;
 import java.util.Set;
 
-@WebServlet(name = "UserRegistrationServlet", urlPatterns = {"/user/registration"})
+@WebServlet(name = "UserRegisterServlet", urlPatterns = {"/user-registration"})
 public class UserRegistrationServlet extends HttpServlet {
     private UserService userService;
     private ValidatorFactory validatorFactory;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
+        System.out.println("vao day");
         EntityManagerFactory emf = (EntityManagerFactory) config.getServletContext().getAttribute("emf");
         this.userService = new UserService(emf);
         validatorFactory = Validation.buildDefaultValidatorFactory();
     }
-
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -50,11 +50,28 @@ public class UserRegistrationServlet extends HttpServlet {
         Set<ConstraintViolation<User>> violations = validator.validate(user);
 
         if (!violations.isEmpty()) {
-            req.setAttribute("errors", violations);
+
+            StringBuilder sb = new StringBuilder();
+
+            for (ConstraintViolation<User> violation : violations) {
+                sb.append(violation.getMessage()).append("\n");
+            }
+            RegistrationResult result = new RegistrationResult(false, sb.toString());
+            req.setAttribute("errors", result.getMessage());
+            req.setAttribute("user", user);
             req.getRequestDispatcher("/WEB-INF/session9/registration.jsp").forward(req, resp);
             return;
         }
 
-        userService.registration(user);
+        RegistrationResult result = userService.registration(user);
+
+        if (!result.isSuccess()) {
+            req.setAttribute("errors", result.getMessage());
+            req.setAttribute("user", user);
+            req.getRequestDispatcher("/WEB-INF/session9/registration.jsp").forward(req, resp);
+            return;
+        }
+
+        req.getRequestDispatcher("/WEB-INF/session9/registration_success.jsp").forward(req, resp);
     }
 }

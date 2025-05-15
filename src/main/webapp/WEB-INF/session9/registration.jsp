@@ -5,7 +5,7 @@
     <title>Registration</title>
 </head>
 <body>
-<c:url var="RegisterURL" value="/user/registration"/>
+<c:url var="RegisterURL" value="/user-registration"/>
 <form action="${RegisterURL}" method="post">
     <table border="1">
         <tr>
@@ -13,10 +13,8 @@
         </tr>
         <c:if test="${not empty requestScope.errors}">
             <tr>
-                <td colspan="2" align="center">
-                    <c:forEach var="e" items="${requestScope.errors}">
-                        <span>${e.message}</span>
-                    </c:forEach>
+                <td colspan="2" align="center" style="color: red">
+                   ${requestScope.errors}
                 </td>
             </tr>
         </c:if>
