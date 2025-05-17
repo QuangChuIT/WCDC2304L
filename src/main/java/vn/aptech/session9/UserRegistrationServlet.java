@@ -7,13 +7,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
-import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 
 import java.io.IOException;
-import java.util.Set;
 
 @WebServlet(name = "UserRegisterServlet", urlPatterns = {"/user-registration"})
 public class UserRegistrationServlet extends HttpServlet {
@@ -24,8 +21,9 @@ public class UserRegistrationServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         System.out.println("vao day");
         EntityManagerFactory emf = (EntityManagerFactory) config.getServletContext().getAttribute("emf");
-        this.userService = new UserService(emf);
         validatorFactory = Validation.buildDefaultValidatorFactory();
+        this.userService = new UserService(emf);
+        userService.setValidatorFactory(validatorFactory);
     }
 
     @Override
@@ -45,28 +43,10 @@ public class UserRegistrationServlet extends HttpServlet {
         user.setPassword(password);
         user.setEmail(email);
 
-        Validator validator = validatorFactory.getValidator();
+        CommonResult commonResult = userService.registration(user);
 
-        Set<ConstraintViolation<User>> violations = validator.validate(user);
-
-        if (!violations.isEmpty()) {
-
-            StringBuilder sb = new StringBuilder();
-
-            for (ConstraintViolation<User> violation : violations) {
-                sb.append(violation.getMessage()).append("\n");
-            }
-            RegistrationResult result = new RegistrationResult(false, sb.toString());
-            req.setAttribute("errors", result.getMessage());
-            req.setAttribute("user", user);
-            req.getRequestDispatcher("/WEB-INF/session9/registration.jsp").forward(req, resp);
-            return;
-        }
-
-        RegistrationResult result = userService.registration(user);
-
-        if (!result.isSuccess()) {
-            req.setAttribute("errors", result.getMessage());
+        if (!commonResult.isSuccess()) {
+            req.setAttribute("errors", commonResult.getErrors());
             req.setAttribute("user", user);
             req.getRequestDispatcher("/WEB-INF/session9/registration.jsp").forward(req, resp);
             return;

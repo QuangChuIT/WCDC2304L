@@ -10,11 +10,11 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@WebFilter(filterName = "AuthenticationFilter",
+/*@WebFilter(filterName = "AuthenticationFilter",
         urlPatterns = {"/*"},
         initParams = {
                 @WebInitParam(name = "typeLogin", value = "s")
-        })
+        })*/
 public class AuthenticationFilter implements Filter {
     private String typeLogin;
 

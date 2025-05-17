@@ -9,12 +9,11 @@
         <class>vn.aptech.session8.Category</class>
         <class>vn.aptech.session8.Product</class>
         <class>vn.aptech.session9.User</class>
-
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/wcd?useSSL=false"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3307/wcdsession7?useSSL=false"/>
             <property name="jakarta.persistence.jdbc.user" value="root"/>
-            <property name="jakarta.persistence.jdbc.password" value="123abc@A"/>
+            <property name="jakarta.persistence.jdbc.password" value=""/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>

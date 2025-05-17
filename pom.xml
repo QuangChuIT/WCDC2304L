@@ -41,7 +41,7 @@
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
-      <version>8.0.33</version>
+      <version>5.1.47</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/jakarta.persistence/jakarta.persistence-api -->
     <dependency>
@@ -70,9 +70,18 @@
       <artifactId>expressly</artifactId>
       <version>5.0.0</version>
     </dependency>
-
   </dependencies>
   <build>
     <finalName>WCDC2304L</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>9</source>
+          <target>9</target>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 </project>

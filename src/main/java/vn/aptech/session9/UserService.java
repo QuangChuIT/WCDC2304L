@@ -4,35 +4,79 @@ package vn.aptech.session9;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Query;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class UserService {
 
     private final EntityManagerFactory emf;
+    private ValidatorFactory validatorFactory;
 
     public UserService(EntityManagerFactory emf) {
         this.emf = emf;
     }
 
-    public RegistrationResult registration(User user) {
+    public User login(String username, String password) {
         EntityManager em = emf.createEntityManager();
-
-        // Check unique
-        if (existsByUsername(user.getUsername())) {
-            return new RegistrationResult(false, "Username already exists");
-        }
-
-        if (existsByEmail(user.getEmail())) {
-            return new RegistrationResult(false, "Email already exists");
-        }
-
         try {
+            Query query = em.createQuery("SELECT u FROM User u WHERE u.username = :username and u.password =:password");
+            query.setParameter("username", username);
+            query.setParameter("password", password);
+            return (User) query.getSingleResult();
+        } catch (Exception e) {
+            System.out.println("Error login: " + e.getMessage());
+            return null;
+        } finally {
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
+        }
+    }
+
+    public CommonResult registration(User user) {
+        EntityManager em = emf.createEntityManager();
+        CommonResult result;
+        List<String> errors = new ArrayList<>();
+        try {
+            Validator validator = validatorFactory.getValidator();
+
+            Set<ConstraintViolation<User>> violations = validator.validate(user);
+
+            if (!violations.isEmpty()) {
+                errors = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toList());
+                result = new CommonResult(false, "Invalid request", errors);
+                return result;
+            }
+
+            if (existsByEmail(user.getEmail())) {
+                errors.add("Email already exists");
+            }
+
+            if (existsByUsername(user.getUsername())) {
+                errors.add("Username already exists");
+            }
+
+            if (!errors.isEmpty()) {
+                result = new CommonResult(false, "Invalid request", errors);
+                return result;
+            }
+
             em.getTransaction().begin();
             em.persist(user);
             em.getTransaction().commit();
-            return new RegistrationResult(true, "User registered successfully");
+            result = new CommonResult(true, "Registration user successfully", errors);
+            return result;
         } catch (Exception e) {
             em.getTransaction().rollback();
-            return new RegistrationResult(false, "Registration failed: " + e.getMessage());
+            errors.add(e.getMessage());
+            result = new CommonResult(false, "Error registration user", errors);
+            return result;
         } finally {
             if (em != null && em.isOpen()) {
                 em.close();
@@ -70,5 +114,13 @@ public class UserService {
             }
         }
         return false;
+    }
+
+    public ValidatorFactory getValidatorFactory() {
+        return validatorFactory;
+    }
+
+    public void setValidatorFactory(ValidatorFactory validatorFactory) {
+        this.validatorFactory = validatorFactory;
     }
 }

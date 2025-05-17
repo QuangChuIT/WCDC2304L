@@ -14,7 +14,9 @@
         <c:if test="${not empty requestScope.errors}">
             <tr>
                 <td colspan="2" align="center" style="color: red">
-                   ${requestScope.errors}
+                   <c:forEach var="e" items="${requestScope.errors}">
+                       <span>${e}</span><br>
+                   </c:forEach>
                 </td>
             </tr>
         </c:if>
